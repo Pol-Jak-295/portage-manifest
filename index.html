@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+<head>
+  <style id="gtk-styles"></style>
+  <style>
+    /* Your existing styles... */
+  </style>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: 'Noto Sans Nerd Font', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    height: 100vh;
+    background: #1e1e2e; /* base */
+  }
+  .sidebar {
+    background: #181825; /* mantle */
+    border-right: 1px solid #45475a; /* surface0 */
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .main {
+    padding: 20px;
+    overflow-y: auto;
+    background: #1e1e2e; /* base */
+  }
+  .search-box {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #45475a; /* surface0 */
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background: #181825; /* mantle */
+    color: #cdd6f4; /* text */
+    font-family: 'Noto Sans Nerd Font', sans-serif;
+  }
+  .search-box:focus {
+    outline: none;
+    border-color: #89b4fa; /* blue */
+  }
+  .result-item {
+    padding: 12px;
+    border-bottom: 1px solid #313244; /* surface1 */
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #cdd6f4; /* text */
+  }
+  .result-item:hover {
+    background: #313244; /* surface1 */
+  }
+  .result-item.selected {
+    background: #45475a; /* surface0 */
+    border-left: 3px solid #89b4fa; /* blue */
+  }
+  .package-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #f5e0dc; /* rosewater */
+  }
+  .package-source {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-left: 8px;
+    background: #313244; /* surface1 */
+    color: #cdd6f4; /* text */
+  }
+  .source-official { background: #a6e3a1; color: #1e1e2e; } /* green */
+  .source-aur { background: #f9e2af; color: #1e1e2e; } /* yellow */
+  .source-flatpak { background: #89b4fa; color: #1e1e2e; } /* blue */
+  .package-desc {
+    font-size: 12px;
+    color: #a6adc8; /* subtext0 */
+    margin-top: 4px;
+  }
+  .install-box {
+    background: #313244; /* surface1 */
+    border: 1px solid #45475a; /* surface0 */
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .install-box h3 {
+    margin-bottom: 12px;
+    color: #89dceb; /* sky */
+    font-family: 'Noto Sans Nerd Font', sans-serif;
+  }
+  .install-code {
+    background: #11111b; /* crust */
+    color: #cdd6f4; /* text */
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Noto Sans Nerd Font Mono', 'Monaco', 'Menlo', monospace;
+    font-size: 14px;
+    position: relative;
+    border: 1px solid #45475a; /* surface0 */
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    background: #585b70; /* surface2 */
+    color: #cdd6f4; /* text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'Noto Sans Nerd Font', sans-serif;
+  }
+  .copy-btn:hover {
+    background: #6c7086; /* surface2 */
+  }
+  .readme {
+    background: #181825; /* mantle */
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: #cdd6f4; /* text */
+    border: 1px solid #313244; /* surface1 */
+  }
+  .readme h1 { 
+    font-size: 28px; 
+    margin-bottom: 16px;
+    color: #f5c2e7; /* pink */
+  }
+  .readme h2 { 
+    font-size: 22px; 
+    margin: 24px 0 12px;
+    color: #cba6f7; /* mauve */
+  }
+  .readme h3 {
+    color: #89b4fa; /* blue */
+  }
+  .readme p {
+    color: #cdd6f4; /* text */
+  }
+  .readme a {
+    color: #89b4fa; /* blue */
+    text-decoration: none;
+  }
+  .readme a:hover {
+    text-decoration: underline;
+    color: #b4befe; /* lavender */
+  }
+  .readme pre {
+    background: #11111b; /* crust */
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    border: 1px solid #313244; /* surface1 */
+    color: #cdd6f4; /* text */
+    font-family: 'Noto Sans Nerd Font Mono', 'Monaco', 'Menlo', monospace;
+  }
+  .readme code {
+    font-family: 'Noto Sans Nerd Font Mono', 'Monaco', 'Menlo', monospace;
+    background: #313244; /* surface1 */
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #f38ba8; /* red */
+  }
+  .readme blockquote {
+    border-left: 4px solid #cba6f7; /* mauve */
+    padding-left: 16px;
+    margin: 8px 0;
+    color: #a6adc8; /* subtext0 */
+  }
+  .readme hr {
+    border: none;
+    border-top: 1px solid #45475a; /* surface0 */
+    margin: 16px 0;
+  }
+  .readme table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+  }
+  .readme th {
+    background: #313244; /* surface1 */
+    padding: 8px;
+    text-align: left;
+    color: #f5e0dc; /* rosewater */
+  }
+  .readme td {
+    padding: 8px;
+    border: 1px solid #313244; /* surface1 */
+    color: #cdd6f4; /* text */
+  }
+  .readme tr:nth-child(even) {
+    background: #1e1e2e; /* base */
+  }
+</style>
+ </head>
+<body>
+  <div class="sidebar">
+    <input 
+      type="text" 
+      class="search-box" 
+      id="search" 
+      placeholder="Search packages (e.g., firefox)..."
+      autofocus
+    >
+    <div id="results"></div>
+  </div>
+  
+  <div class="main">
+    <div id="package-detail">
+      <p style="color: #999; text-align: center; margin-top: 100px;">
+        Select a package to view details
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const searchInput = document.getElementById('search');
+    const resultsDiv = document.getElementById('results');
+    const detailDiv = document.getElementById('package-detail');
+    
+    let currentResults = [];
+    let selectedPackage = null;
+    
+    // Search as user types
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      const query = e.target.value.trim();
+      if (query.length < 2) return;
+      
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 500);
+    });
+    
+    async function performSearch(query) {
+      resultsDiv.innerHTML = '<p style="color: #999;">Searching...</p>';
+      
+      try {
+        const results = await window.electronAPI.searchPackages(query);
+        currentResults = results;
+        displayResults(results);
+      } catch (error) {
+        resultsDiv.innerHTML = `<p style="color: #f44336;">Error: ${error.message}</p>`;
+      }
+    }
+    
+    function displayResults(results) {
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<p style="color: #999;">No packages found</p>';
+        return;
+      }
+      
+      let html = '';
+      results.forEach((pkg, index) => {
+        const sourceClass = `source-${pkg.source}`;
+        html += `
+          <div class="result-item ${selectedPackage === pkg ? 'selected' : ''}" 
+               onclick="selectPackage(${index})">
+            <span class="package-name">${pkg.name}</span>
+            <span class="package-source ${sourceClass}">${pkg.source}</span>
+            <div class="package-desc">${pkg.description || 'No description'}</div>
+          </div>
+        `;
+      });
+      
+      resultsDiv.innerHTML = html;
+    }
+    
+    async function selectPackage(index) {
+      const pkg = currentResults[index];
+      selectedPackage = pkg;
+      displayResults(currentResults); // Refresh to show selected state
+      
+      detailDiv.innerHTML = '<p style="color: #999;">Loading package details...</p>';
+      
+      // Generate installation command
+      const installCmd = getInstallCommand(pkg);
+      
+      // Fetch README
+      let readme = '';
+      try {
+        readme = await window.electronAPI.fetchReadme(pkg);
+      } catch (error) {
+        readme = `# Error\n\nFailed to load README: ${error.message}`;
+      }
+      
+      // Render detail view
+      detailDiv.innerHTML = `
+        <div class="install-box">
+          <h3>📦 Installation</h3>
+          <div class="install-code">
+            <code>${installCmd}</code>
+            <button class="copy-btn" onclick="copyToClipboard('${installCmd.replace(/'/g, "\\'")}')">
+              📋 Copy
+            </button>
+          </div>
+        </div>
+        
+        <div class="readme">
+          ${marked.parse(readme)}
+        </div>
+      `;
+    }
+    
+    function getInstallCommand(pkg) {
+      const commands = {
+        'official': `sudo pacman -S ${pkg.name}`,
+        'aur': `yay -S ${pkg.name}`,
+        'flatpak': `flatpak install ${pkg.flatpakId || pkg.name}`
+      };
+      return commands[pkg.source] || `# No install command for ${pkg.source}`;
+    }
+    
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

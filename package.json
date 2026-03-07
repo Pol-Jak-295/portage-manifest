@@ -1,0 +1,45 @@
+{
+  "name": "portage-manifest",
+  "productName": "Portage Manifest",
+  "version": "1.0.0",
+  "description": "A unified package browser for Arch Linux - search official repos, AUR, and Flatpak with beautiful README rendering",
+  "main": "main.js",
+  "author": "Jaka Polesnik <polesnik.jaka@gmail.com>",
+  "license": "CC-BY-NC-4.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pol-Jak-295/portage-manifest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pol-Jak-295/portage-manifest/issues"
+  },
+  "homepage": "https://github.com/Pol-Jak-295/portage-manifest#readme",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "marked": "^4.3.0",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "electron": "^39.8.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.pol-jak-295.portagemanifest",
+    "productName": "Portage Manifest",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility",
+      "icon": "build/icon.png"
+    }
+  }
+}
