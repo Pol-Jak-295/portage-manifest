@@ -5,6 +5,12 @@ package-lock.json
 # Build outputs
 dist/
 
+# makepkg outputs
+portage-manifest-1.0.0-1-x86_64.pkg.tar.zst
+portage-manifest-1.0.0.AppImage
+portage-manifest-debug-1.0.0-1-x86_64.pkg.tar.zst
+pkg/
+
 # OS files
 .DS_Store
 Thumbs.db
