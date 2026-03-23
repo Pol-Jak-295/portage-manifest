@@ -1,4 +1,4 @@
-# Package Search App
+# Portage Manifest - a package search app
 
 A unified package search tool for Arch Linux that searches official repos, AUR, and Flatpak, with beautiful README rendering.
 
