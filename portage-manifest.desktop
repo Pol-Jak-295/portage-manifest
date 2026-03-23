@@ -2,7 +2,7 @@
 Name=Portage Manifest
 Comment=Package browser for Arch Linux
 Exec=/usr/bin/portage-manifest
-Icon=portage-manifest.svg
+Icon=portage-manifest
 Terminal=false
 Type=Application
 Categories=Utility;PackageManager;
